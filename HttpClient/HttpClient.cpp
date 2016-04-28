@@ -6,6 +6,7 @@
 #include "ParseUrl.h"
 #include "HttpGet.h"
 #include "DisplayResult.h"
+#include "Base64.h"
 
 #define HTTP_PORT 80
 

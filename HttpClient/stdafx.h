@@ -15,6 +15,7 @@
 #include <string.h>
 #include <sys/types.h>
 #include <stdarg.h>
+#include <assert.h>
 #ifdef WIN32
 #include <WinSock2.h>
 #include <ws2tcpip.h>
