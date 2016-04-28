@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.24720.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SslBook", "SslBook\SslBook.csproj", "{EED91B2C-96D6-49A7-A5EC-FC0FCE892D5B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{EED91B2C-96D6-49A7-A5EC-FC0FCE892D5B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EED91B2C-96D6-49A7-A5EC-FC0FCE892D5B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EED91B2C-96D6-49A7-A5EC-FC0FCE892D5B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EED91B2C-96D6-49A7-A5EC-FC0FCE892D5B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
