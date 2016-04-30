@@ -7,6 +7,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SslBook", "SslBook\SslBook.
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "HttpClient", "HttpClient\HttpClient.vcxproj", "{41AE54D0-D6F3-4996-9916-E0FC7BBA42EE}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SslLib", "SslLib\SslLib.vcxproj", "{F459CE3F-729A-4BF2-B551-EB5848E3D6E3}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "HttpServer", "HttpServer\HttpServer.vcxproj", "{12BB77C3-17BE-4BD0-BF42-525AA15C96A1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -40,6 +44,28 @@ Global
 		{41AE54D0-D6F3-4996-9916-E0FC7BBA42EE}.Release|x64.Build.0 = Release|x64
 		{41AE54D0-D6F3-4996-9916-E0FC7BBA42EE}.Release|x86.ActiveCfg = Release|Win32
 		{41AE54D0-D6F3-4996-9916-E0FC7BBA42EE}.Release|x86.Build.0 = Release|Win32
+		{F459CE3F-729A-4BF2-B551-EB5848E3D6E3}.Debug|Any CPU.ActiveCfg = Debug|Win32
+		{F459CE3F-729A-4BF2-B551-EB5848E3D6E3}.Debug|Any CPU.Build.0 = Debug|Win32
+		{F459CE3F-729A-4BF2-B551-EB5848E3D6E3}.Debug|x64.ActiveCfg = Debug|x64
+		{F459CE3F-729A-4BF2-B551-EB5848E3D6E3}.Debug|x64.Build.0 = Debug|x64
+		{F459CE3F-729A-4BF2-B551-EB5848E3D6E3}.Debug|x86.ActiveCfg = Debug|Win32
+		{F459CE3F-729A-4BF2-B551-EB5848E3D6E3}.Debug|x86.Build.0 = Debug|Win32
+		{F459CE3F-729A-4BF2-B551-EB5848E3D6E3}.Release|Any CPU.ActiveCfg = Release|Win32
+		{F459CE3F-729A-4BF2-B551-EB5848E3D6E3}.Release|x64.ActiveCfg = Release|x64
+		{F459CE3F-729A-4BF2-B551-EB5848E3D6E3}.Release|x64.Build.0 = Release|x64
+		{F459CE3F-729A-4BF2-B551-EB5848E3D6E3}.Release|x86.ActiveCfg = Release|Win32
+		{F459CE3F-729A-4BF2-B551-EB5848E3D6E3}.Release|x86.Build.0 = Release|Win32
+		{12BB77C3-17BE-4BD0-BF42-525AA15C96A1}.Debug|Any CPU.ActiveCfg = Debug|Win32
+		{12BB77C3-17BE-4BD0-BF42-525AA15C96A1}.Debug|Any CPU.Build.0 = Debug|Win32
+		{12BB77C3-17BE-4BD0-BF42-525AA15C96A1}.Debug|x64.ActiveCfg = Debug|x64
+		{12BB77C3-17BE-4BD0-BF42-525AA15C96A1}.Debug|x64.Build.0 = Debug|x64
+		{12BB77C3-17BE-4BD0-BF42-525AA15C96A1}.Debug|x86.ActiveCfg = Debug|Win32
+		{12BB77C3-17BE-4BD0-BF42-525AA15C96A1}.Debug|x86.Build.0 = Debug|Win32
+		{12BB77C3-17BE-4BD0-BF42-525AA15C96A1}.Release|Any CPU.ActiveCfg = Release|Win32
+		{12BB77C3-17BE-4BD0-BF42-525AA15C96A1}.Release|x64.ActiveCfg = Release|x64
+		{12BB77C3-17BE-4BD0-BF42-525AA15C96A1}.Release|x64.Build.0 = Release|x64
+		{12BB77C3-17BE-4BD0-BF42-525AA15C96A1}.Release|x86.ActiveCfg = Release|Win32
+		{12BB77C3-17BE-4BD0-BF42-525AA15C96A1}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

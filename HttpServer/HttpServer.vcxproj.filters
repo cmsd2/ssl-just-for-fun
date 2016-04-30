@@ -24,10 +24,10 @@
     <ClInclude Include="targetver.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="DisplayResult.h">
+    <ClInclude Include="HttpHandler.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="HttpGet.h">
+    <ClInclude Include="ReadLine.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -35,13 +35,13 @@
     <ClCompile Include="stdafx.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="HttpClient.cpp">
+    <ClCompile Include="HttpServer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="HttpGet.cpp">
+    <ClCompile Include="HttpHandler.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="DisplayResult.cpp">
+    <ClCompile Include="ReadLine.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

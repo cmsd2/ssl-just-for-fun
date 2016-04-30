@@ -24,10 +24,13 @@
     <ClInclude Include="targetver.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="DisplayResult.h">
+    <ClInclude Include="..\HttpClient\Base64.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="HttpGet.h">
+    <ClInclude Include="..\HttpClient\ParseUrl.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Buffer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -35,13 +38,13 @@
     <ClCompile Include="stdafx.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="HttpClient.cpp">
+    <ClCompile Include="..\HttpClient\Base64.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="HttpGet.cpp">
+    <ClCompile Include="..\HttpClient\ParseUrl.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="DisplayResult.cpp">
+    <ClCompile Include="Buffer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

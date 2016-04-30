@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#include "Base64.h"
 
 static char *base64 = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
 
