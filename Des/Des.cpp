@@ -1,6 +1,6 @@
 #include <string.h>
 #include "stdafx.h"
-#include "Bits.h"
+#include "Utils/Bits.h"
 #include "Des.h"
 
 static const int IpTable[] = {

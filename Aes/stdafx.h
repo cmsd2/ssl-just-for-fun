@@ -7,8 +7,6 @@
 
 #include "targetver.h"
 
-//#define WIN32_LEAN_AND_MEAN             // Exclude rarely-used stuff from Windows headers
-
 #include <stdio.h>
 #include <tchar.h>
 
@@ -19,12 +17,9 @@
 #include <stdarg.h>
 #include <assert.h>
 #ifdef WIN32
-#include <WinSock2.h>
-#include <ws2tcpip.h>
 #include <Windows.h>
-#else
-#include <netdb.h>
-#include <sys/socket.h>
-#include <netinet/in.h>
-#include <unistd.h>
 #endif
+
+
+
+// TODO: reference additional headers your program requires here

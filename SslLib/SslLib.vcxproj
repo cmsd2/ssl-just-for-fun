@@ -130,14 +130,12 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\HttpClient\Base64.h" />
     <ClInclude Include="..\HttpClient\ParseUrl.h" />
     <ClInclude Include="Buffer.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\HttpClient\Base64.cpp" />
     <ClCompile Include="..\HttpClient\ParseUrl.cpp" />
     <ClCompile Include="Buffer.cpp" />
     <ClCompile Include="stdafx.cpp">
