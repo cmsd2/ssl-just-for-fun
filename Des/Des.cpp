@@ -323,7 +323,7 @@ void DesOperate(const unsigned char *input,
 void DesEncrypt(const unsigned char *plaintext,
 	const int plaintext_len,
 	unsigned char *ciphertext,
-	const unsigned char *iv,
+	void *iv,
 	const unsigned char *key,
 	PaddingType padding_type)
 {
@@ -331,7 +331,7 @@ void DesEncrypt(const unsigned char *plaintext,
 
 	unsigned char * padded_plaintext = DesPadPlaintext(plaintext, &padded_plaintext_len, padding_type);
 
-	DesOperate(padded_plaintext, padded_plaintext_len, ciphertext, iv, key, OP_ENCRYPT, 0);
+	DesOperate(padded_plaintext, padded_plaintext_len, ciphertext, (unsigned char*)iv, key, OP_ENCRYPT, 0);
 
 	free(padded_plaintext);
 }
@@ -339,10 +339,10 @@ void DesEncrypt(const unsigned char *plaintext,
 void DesDecrypt(const unsigned char *ciphertext,
 	const int ciphertext_len,
 	unsigned char *plaintext,
-	const unsigned char *iv,
+	void *iv,
 	const unsigned char *key)
 {
-	DesOperate(ciphertext, ciphertext_len, plaintext, iv, key, OP_DECRYPT, 0);
+	DesOperate(ciphertext, ciphertext_len, plaintext, (unsigned char*)iv, key, OP_DECRYPT, 0);
 
 	// remove any padding. SSL takes care of padding.
 
@@ -378,7 +378,7 @@ unsigned char * DesPadPlaintext(const unsigned char * plaintext, int * plaintext
 void Des3Encrypt(const unsigned char *plaintext,
 	const int plaintext_len,
 	unsigned char *ciphertext,
-	const unsigned char *iv,
+	void *iv,
 	const unsigned char *key,
 	PaddingType padding_type)
 {
@@ -386,7 +386,7 @@ void Des3Encrypt(const unsigned char *plaintext,
 
 	unsigned char * padded_plaintext = DesPadPlaintext(plaintext, &padded_plaintext_len, padding_type);
 
-	DesOperate(padded_plaintext, padded_plaintext_len, ciphertext, iv, key, OP_ENCRYPT, 1);
+	DesOperate(padded_plaintext, padded_plaintext_len, ciphertext, (unsigned char*)iv, key, OP_ENCRYPT, 1);
 
 	free(padded_plaintext);
 }
@@ -394,8 +394,8 @@ void Des3Encrypt(const unsigned char *plaintext,
 void Des3Decrypt(const unsigned char *ciphertext,
 	const int ciphertext_len,
 	unsigned char *plaintext,
-	const unsigned char *iv,
+	void *iv,
 	const unsigned char *key)
 {
-	DesOperate(ciphertext, ciphertext_len, plaintext, iv, key, OP_DECRYPT, 1);
+	DesOperate(ciphertext, ciphertext_len, plaintext, (unsigned char*)iv, key, OP_DECRYPT, 1);
 }

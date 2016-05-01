@@ -440,35 +440,35 @@ void AesDecrypt(const unsigned char *input,
 void Aes128Encrypt(const unsigned char *plaintext,
 	const int plaintext_len,
 	unsigned char ciphertext[],
-	const unsigned char *iv,
+	void *iv,
 	const unsigned char *key)
 {
-	AesEncrypt(plaintext, plaintext_len, ciphertext, iv, key, 16);
+	AesEncrypt(plaintext, plaintext_len, ciphertext, (unsigned char *)iv, key, 16);
 }
 
 void Aes128Decrypt(const unsigned char *plaintext,
 	const int plaintext_len,
 	unsigned char ciphertext[],
-	const unsigned char *iv,
+	void *iv,
 	const unsigned char *key)
 {
-	AesDecrypt(plaintext, plaintext_len, ciphertext, iv, key, 16);
+	AesDecrypt(plaintext, plaintext_len, ciphertext, (unsigned char*)iv, key, 16);
 }
 
 void Aes256Encrypt(const unsigned char *plaintext,
 	const int plaintext_len,
 	unsigned char ciphertext[],
-	const unsigned char *iv,
+	void *iv,
 	const unsigned char *key)
 {
-	AesEncrypt(plaintext, plaintext_len, ciphertext, iv, key, 32);
+	AesEncrypt(plaintext, plaintext_len, ciphertext, (unsigned char*)iv, key, 32);
 }
 
 void Aes256Decrypt(const unsigned char *plaintext,
 	const int plaintext_len,
 	unsigned char ciphertext[],
-	const unsigned char *iv,
+	void *iv,
 	const unsigned char *key)
 {
-	AesDecrypt(plaintext, plaintext_len, ciphertext, iv, key, 32);
+	AesDecrypt(plaintext, plaintext_len, ciphertext, (unsigned char *)iv, key, 32);
 }

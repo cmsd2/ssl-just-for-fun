@@ -22,23 +22,23 @@ void AesEncrypt(const unsigned char *input,
 void Aes128Encrypt(const unsigned char *plaintext,
 	const int plaintext_len,
 	unsigned char ciphertext[],
-	const unsigned char *iv,
+	void *iv,
 	const unsigned char *key);
 
 void Aes128Decrypt(const unsigned char *plaintext,
 	const int plaintext_len,
 	unsigned char ciphertext[],
-	const unsigned char *iv,
+	void *iv,
 	const unsigned char *key);
 
 void Aes256Encrypt(const unsigned char *plaintext,
 	const int plaintext_len,
 	unsigned char ciphertext[],
-	const unsigned char *iv,
+	void *iv,
 	const unsigned char *key);
 
 void Aes256Decrypt(const unsigned char *plaintext,
 	const int plaintext_len,
 	unsigned char ciphertext[],
-	const unsigned char *iv,
+	void *iv,
 	const unsigned char *key);
