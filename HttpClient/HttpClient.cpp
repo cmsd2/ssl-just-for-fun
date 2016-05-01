@@ -17,7 +17,6 @@ int main(int argc, char **argv)
 	char *url;
 	char *host, *path;
 
-	struct hostent *host_name;
 	struct sockaddr_in host_address;
 	PADDRINFOA host_addr_info;
 

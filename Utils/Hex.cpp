@@ -33,9 +33,9 @@ int HexDecode(const char *input, char **decoded)
 					((input[i + 1] <= '9') ? input[i + 1] - '0' :
 						((tolower(input[i + 1])) - 'a' + 10));
 		}
-
-		return len;
 	}
+
+	return len;
 }
 
 void ShowHex(const char *array, int len)

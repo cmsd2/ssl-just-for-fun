@@ -49,4 +49,6 @@ char * ReadLine(int connection)
 	}
 
 	buffer.clear();
+
+	return NULL;
 }

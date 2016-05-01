@@ -34,12 +34,28 @@ int main(int argc, char **argv)
 
 	if (!(strcmp(argv[1], "-e")))
 	{
-		DesEncrypt(input, input_len, output, iv, key, PAD_NIST_800_3A);
+		if (key_len == 24)
+		{
+			Des3Encrypt(input, input_len, output, iv, key, PAD_NIST_800_3A);
+		}
+		else
+		{
+			DesEncrypt(input, input_len, output, iv, key, PAD_NIST_800_3A);
+		}
+
 		ShowHex((char*)output, out_len);
 	}
 	else if (!(strcmp(argv[1], "-d")))
 	{
-		DesDecrypt(input, input_len, output, iv, key);
+		if (key_len == 24)
+		{
+			Des3Decrypt(input, input_len, output, iv, key);
+		}
+		else
+		{
+			DesDecrypt(input, input_len, output, iv, key);
+		}
+		
 		ShowHex((char*)output, out_len);
 	}
 	else

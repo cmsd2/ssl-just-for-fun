@@ -272,7 +272,8 @@ void DesOperate(const unsigned char *input,
 	unsigned char *output,
 	const unsigned char *iv,
 	const unsigned char *key,
-	OpType op_type)
+	OpType op_type,
+	int triplicate)
 {
 	unsigned char input_block[DES_BLOCK_SIZE];
 
@@ -285,10 +286,29 @@ void DesOperate(const unsigned char *input,
 		{
 			xor (input_block, iv, DES_BLOCK_SIZE); // implement CBC
 			DesBlockOperate(input_block, output, key, op_type);
+			
+			if (triplicate)
+			{
+				memcpy(input_block, output, DES_BLOCK_SIZE);
+				DesBlockOperate(input_block, output, key + DES_KEY_SIZE, OP_DECRYPT);
+
+				memcpy(input_block, output, DES_BLOCK_SIZE);
+				DesBlockOperate(input_block, output, key + (DES_KEY_SIZE * 2), op_type);
+			}
+
 			memcpy((void*)iv, (void*)output, DES_BLOCK_SIZE); // CBC
 		}
 		else if (op_type == OP_DECRYPT)
 		{
+			if (triplicate)
+			{
+				DesBlockOperate(input_block, output, key + (DES_KEY_SIZE * 2), op_type);
+				memcpy(input_block, output, DES_BLOCK_SIZE);
+
+				DesBlockOperate(input_block, output, key + DES_KEY_SIZE, OP_ENCRYPT);
+				memcpy(input_block, output, DES_BLOCK_SIZE);
+			}
+
 			DesBlockOperate(input_block, output, key, op_type);
 			xor (output, iv, DES_BLOCK_SIZE);
 			memcpy((void*)iv, (void*)input, DES_BLOCK_SIZE); // CBC
@@ -307,26 +327,11 @@ void DesEncrypt(const unsigned char *plaintext,
 	const unsigned char *key,
 	PaddingType padding_type)
 {
-	unsigned char *padded_plaintext;
-	int padding_len;
+	int padded_plaintext_len = plaintext_len;
 
-	// pad to multiple of DES_BLOCK_SIZE
-	padding_len = DES_BLOCK_SIZE - (plaintext_len % DES_BLOCK_SIZE);
-	padded_plaintext = (unsigned char *)malloc(plaintext_len + padding_len);
+	unsigned char * padded_plaintext = DesPadPlaintext(plaintext, &padded_plaintext_len, padding_type);
 
-	if (padding_type == PAD_NIST_800_3A)
-	{
-		memset(padded_plaintext, 0x0, plaintext_len + padding_len);
-		padded_plaintext[plaintext_len] = 0x80;
-	}
-	else if (padding_type == PAD_PKCS_5) 
-	{
-		memset(padded_plaintext, padding_len, plaintext_len + padding_len);
-	}
-
-	memcpy(padded_plaintext, plaintext, plaintext_len);
-
-	DesOperate(padded_plaintext, plaintext_len + padding_len, ciphertext, iv, key, OP_ENCRYPT);
+	DesOperate(padded_plaintext, padded_plaintext_len, ciphertext, iv, key, OP_ENCRYPT, 0);
 
 	free(padded_plaintext);
 }
@@ -337,9 +342,60 @@ void DesDecrypt(const unsigned char *ciphertext,
 	const unsigned char *iv,
 	const unsigned char *key)
 {
-	DesOperate(ciphertext, ciphertext_len, plaintext, iv, key, OP_DECRYPT);
+	DesOperate(ciphertext, ciphertext_len, plaintext, iv, key, OP_DECRYPT, 0);
 
-	// remove any padding
+	// remove any padding. SSL takes care of padding.
 
 	//plaintext[ciphertext_len - plaintext[ciphertext_len - 1]] = 0x0;
+}
+
+unsigned char * DesPadPlaintext(const unsigned char * plaintext, int * plaintext_len, PaddingType padding_type)
+{
+	unsigned char *padded_plaintext;
+	int padding_len;
+
+	// pad to multiple of DES_BLOCK_SIZE
+	padding_len = DES_BLOCK_SIZE - (*plaintext_len % DES_BLOCK_SIZE);
+	padded_plaintext = (unsigned char *)malloc(*plaintext_len + padding_len);
+
+	if (padding_type == PAD_NIST_800_3A)
+	{
+		memset(padded_plaintext, 0x0, *plaintext_len + padding_len);
+		padded_plaintext[*plaintext_len] = 0x80;
+	}
+	else if (padding_type == PAD_PKCS_5)
+	{
+		memset(padded_plaintext, padding_len, *plaintext_len + padding_len);
+	}
+
+	memcpy(padded_plaintext, plaintext, *plaintext_len);
+
+	*plaintext_len += padding_len;
+
+	return padded_plaintext;
+}
+
+void Des3Encrypt(const unsigned char *plaintext,
+	const int plaintext_len,
+	unsigned char *ciphertext,
+	const unsigned char *iv,
+	const unsigned char *key,
+	PaddingType padding_type)
+{
+	int padded_plaintext_len = plaintext_len;
+
+	unsigned char * padded_plaintext = DesPadPlaintext(plaintext, &padded_plaintext_len, padding_type);
+
+	DesOperate(padded_plaintext, padded_plaintext_len, ciphertext, iv, key, OP_ENCRYPT, 1);
+
+	free(padded_plaintext);
+}
+
+void Des3Decrypt(const unsigned char *ciphertext,
+	const int ciphertext_len,
+	unsigned char *plaintext,
+	const unsigned char *iv,
+	const unsigned char *key)
+{
+	DesOperate(ciphertext, ciphertext_len, plaintext, iv, key, OP_DECRYPT, 1);
 }
