@@ -43,3 +43,5 @@ void Divide(/* inout */ Huge *dividend, /* in */ Huge *divisor, /* out */ Huge *
 int Compare(Huge *h1, Huge *h2);
 
 void PrintHuge(FILE *f, Huge *h);
+
+void Power(Huge * mantissa, Huge * exponent, Huge * result);

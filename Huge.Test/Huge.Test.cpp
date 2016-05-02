@@ -60,6 +60,14 @@ int main(int argc, char **argv)
 			assert(stack_size >= 1);
 			LeftShift(v1);
 			break;
+		case '^':
+			assert(stack_size >= 2);
+			Huge result;
+			Power(v0, v1, &result);
+			FreeHuge(v0);
+			*v0 = result;
+			stack_size--;
+			break;
 		default:
 			assert(stack_size < MAX_STACK);
 			unsigned value = atoi(argv[i]);

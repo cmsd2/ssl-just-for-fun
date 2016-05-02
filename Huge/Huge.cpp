@@ -334,3 +334,25 @@ void PrintHuge(FILE *f, Huge *h)
 		fprintf(f, "NULL");
 	}
 }
+
+void Power(Huge * mantissa, Huge * exponent, Huge * result)
+{
+	Huge counter;
+	Huge one;
+
+	SetHuge(result, 1);
+	SetHuge(&counter, 1);
+	SetHuge(&one, 1);
+	while (Compare(&counter, exponent) <= 0)
+	{
+		//PrintHuge(stdout, &counter); printf("\n");
+		//PrintHuge(stdout, result); printf("\n\n");
+		Multiply(result, mantissa);
+		Add(&counter, &one);
+	}
+	//PrintHuge(stdout, &counter); printf("\n");
+	//PrintHuge(stdout, result); printf("\n\n");
+
+	FreeHuge(&counter);
+	FreeHuge(&one);
+}
