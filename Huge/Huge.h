@@ -9,6 +9,7 @@ memory layout is MSB, i.e. as you would write the number on paper.
 */
 typedef struct HugeTag 
 {
+	int sign;
 	unsigned int size;
 	unsigned char *rep;
 } Huge;
@@ -20,6 +21,10 @@ void CopyHuge(Huge *tgt, Huge *src);
 void Add(Huge *h1, Huge *h2);
 
 void Subtract(Huge *h1, Huge *h2);
+
+void AddMagnitude(Huge *h1, Huge *h2);
+
+void SubtractMagnitude(Huge *h1, Huge *h2);
 
 void Expand(Huge *h);
 
@@ -51,3 +56,5 @@ void ModPower(Huge *mantissa, Huge *exponent, Huge * n, Huge *result);
 void LoadHuge(Huge *h, const unsigned char *bytes, int length);
 
 void UnloadHuge(const Huge *h, unsigned char *bytes, int length);
+
+void MultiplicativeInverse(Huge *z, Huge *a);

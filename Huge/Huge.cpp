@@ -13,6 +13,90 @@ void FreeHuge(Huge * h)
 
 void Add(Huge *h1, Huge *h2)
 {
+	int result_sign;
+
+	if (Compare(h1, h2) > 0)
+	{
+		result_sign = h1->sign;
+
+		if (h1->sign == h2->sign)
+		{
+			AddMagnitude(h1, h2);
+		}
+		else 
+		{
+			SubtractMagnitude(h1, h2);
+		}
+	}
+	else
+	{
+		Huge tmp;
+
+		SetHuge(&tmp, 0);
+		CopyHuge(&tmp, h1);
+		CopyHuge(h1, h2);
+
+		if (h1->sign == tmp.sign)
+		{
+			result_sign = h1->sign;
+			AddMagnitude(h1, &tmp);
+		}
+		else
+		{
+			result_sign = h2->sign;
+			SubtractMagnitude(h1, &tmp);
+		}
+
+		FreeHuge(&tmp);
+	}
+
+	h1->sign = result_sign;
+}
+
+void Subtract(Huge *h1, Huge * h2)
+{
+	int result_sign;
+
+	if (Compare(h1, h2) > 0)
+	{
+		result_sign = h1->sign;
+
+		if (h1->sign == h2->sign)
+		{
+			SubtractMagnitude(h1, h2);
+		}
+		else
+		{
+			AddMagnitude(h1, h2);
+		}
+	}
+	else
+	{
+		Huge tmp;
+
+		SetHuge(&tmp, 0);
+		CopyHuge(&tmp, h1);
+		CopyHuge(h1, h2);
+
+		if (h1->sign == tmp.sign)
+		{
+			result_sign = !(h1->sign);
+			SubtractMagnitude(h1, &tmp);
+		}
+		else
+		{
+			result_sign = !(h2->sign);
+			AddMagnitude(h1, &tmp);
+		}
+
+		FreeHuge(&tmp);
+	}
+
+	h1->sign = result_sign;
+}
+
+void AddMagnitude(Huge *h1, Huge *h2)
+{
 	unsigned int i, j, sum;
 	unsigned int carry = 0;
 
@@ -99,7 +183,7 @@ void Contract(Huge * h, unsigned int new_size)
 	h->size = new_size;
 }
 
-void Subtract(Huge *h1, Huge *h2)
+void SubtractMagnitude(Huge *h1, Huge *h2)
 {
 	int i = h1->size;
 	int j = h2->size;
@@ -127,12 +211,10 @@ void Subtract(Huge *h1, Huge *h2)
 
 	if (borrow && i)
 	{
-		if (!(h1->rep[i - 1])) // don't borrow i
+		if (h1->rep[i - 1])
 		{
-			fprintf(stderr, "Error, subtraction result is negative\n");
-			assert(0);
+			h1->rep[i - 1]--;
 		}
-		h1->rep[i - 1]--;
 	}
 
 	Compact(h1);
@@ -142,10 +224,13 @@ void Multiply(Huge * h1, Huge * h2)
 {
 	unsigned char mask;
 	unsigned int i;
+	int result_sign;
 	Huge temp;
 
 	SetHuge(&temp, 0);
 	CopyHuge(&temp, h1);
+
+	result_sign = !(h1->sign == h2->sign);
 
 	SetHuge(h1, 0);
 
@@ -163,12 +248,15 @@ void Multiply(Huge * h1, Huge * h2)
 			LeftShift(&temp);
 		}
 	} while (i);
+
+	h1->sign = result_sign;
 }
 
 void CopyHuge(Huge *tgt, Huge *src)
 {
 	FreeHuge(tgt);
 
+	tgt->sign = src->sign;
 	tgt->size = src->size;
 	tgt->rep = (unsigned char*)calloc(src->size, sizeof(unsigned char));
 	memcpy(tgt->rep, src->rep, (src->size * sizeof(unsigned char)));
@@ -178,6 +266,7 @@ void SetHuge(Huge * h, unsigned int val)
 {
 	unsigned int mask, i, shift;
 
+	h->sign = 0;
 	h->size = 4;
 
 	for (mask = 0xFF000000; mask > 0xFF; mask >>= 8)
@@ -239,6 +328,7 @@ void Divide(Huge *dividend, Huge *divisor, Huge *quotient)
 	if (quotient)
 	{
 		// may overestimate
+		quotient->sign = !(divisor->sign == dividend->sign);
 		quotient->size = (bit_size / 8) + 1;
 		quotient->rep = (unsigned char*)calloc(quotient->size, sizeof(unsigned char));
 		memset(quotient->rep, 0, quotient->size);
@@ -250,7 +340,7 @@ void Divide(Huge *dividend, Huge *divisor, Huge *quotient)
 	{
 		if (Compare(divisor, dividend) <= 0)
 		{
-			Subtract(dividend, divisor); // dividend -= divisor
+			SubtractMagnitude(dividend, divisor); // dividend -= divisor
 
 			if (quotient)
 			{
@@ -324,6 +414,11 @@ void PrintHuge(FILE *f, Huge *h)
 {
 	if (h->rep)
 	{
+		if (h->sign)
+		{
+			fprintf(f, "- ");
+		}
+
 		for (unsigned int i = 0; i < h->size; i++)
 		{
 			fprintf(f, "%hhu ", h->rep[i]);
@@ -424,6 +519,7 @@ void LoadHuge(Huge *h, const unsigned char *bytes, int length)
 		length--;
 	}
 
+	h->sign = 0;
 	h->size = length;
 	h->rep = (unsigned char*)malloc(length);
 	memcpy(h->rep, bytes, length);
@@ -432,4 +528,58 @@ void LoadHuge(Huge *h, const unsigned char *bytes, int length)
 void UnloadHuge(const Huge *h, unsigned char *bytes, int length)
 {
 	memcpy(bytes + (length - h->size), h->rep, length);
+}
+
+void MultiplicativeInverse(Huge *z, Huge *a)
+{
+	Huge i, j, y2, y1, y, quotient, remainder, a_temp;
+
+	SetHuge(&i, 1);
+	SetHuge(&j, 1);
+	SetHuge(&remainder, 1);
+	SetHuge(&y, 1);
+
+	SetHuge(&a_temp, 1);
+
+	SetHuge(&y2, 0);
+	SetHuge(&y1, 1);
+
+	CopyHuge(&i, a);
+	CopyHuge(&j, z);
+
+	if (z->sign)
+	{
+		Divide(&j, a, NULL);
+		j.sign = 0; // force positive remainder
+		Subtract(&j, a);
+	}
+
+	while ((j.size != 1) || j.rep[0]) // while j != 0
+	{
+		CopyHuge(&remainder, &i);
+		CopyHuge(&i, &j);
+		Divide(&remainder, &j, &quotient); // quotient = i / j. with remainder
+
+		Multiply(&quotient, &y1);
+		CopyHuge(&y, &y2);
+		Subtract(&y, &quotient); // y = y2 - (y1 * quotient)
+
+		CopyHuge(&j, &remainder);
+		CopyHuge(&y2, &y1);
+		CopyHuge(&y1, &y);
+	}
+
+	CopyHuge(z, &y2);
+	CopyHuge(&a_temp, a);
+	Divide(z, &a_temp, NULL); // z := y2 % a
+
+	if (z->sign)
+	{
+		z->sign = 0;
+		Subtract(z, &a_temp);
+		if (z->sign)
+		{
+			z->sign = 0;
+		}
+	}
 }
