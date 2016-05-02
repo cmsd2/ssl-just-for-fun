@@ -324,7 +324,7 @@ void PrintHuge(FILE *f, Huge *h)
 {
 	if (h->rep)
 	{
-		for (int i = 0; i < h->size; i++)
+		for (unsigned int i = 0; i < h->size; i++)
 		{
 			fprintf(f, "%hhu ", h->rep[i]);
 		}
@@ -335,19 +335,20 @@ void PrintHuge(FILE *f, Huge *h)
 	}
 }
 
-void Power(Huge * mantissa, Huge * exponent, Huge * result)
+void Power(Huge * mantissa, Huge * exponent)
 {
 	Huge counter;
 	Huge one;
+	Huge result;
 
-	SetHuge(result, 1);
+	SetHuge(&result, 1);
 	SetHuge(&counter, 1);
 	SetHuge(&one, 1);
 	while (Compare(&counter, exponent) <= 0)
 	{
 		//PrintHuge(stdout, &counter); printf("\n");
 		//PrintHuge(stdout, result); printf("\n\n");
-		Multiply(result, mantissa);
+		Multiply(&result, mantissa);
 		Add(&counter, &one);
 	}
 	//PrintHuge(stdout, &counter); printf("\n");
@@ -355,4 +356,80 @@ void Power(Huge * mantissa, Huge * exponent, Huge * result)
 
 	FreeHuge(&counter);
 	FreeHuge(&one);
+
+	FreeHuge(mantissa);
+	*mantissa = result;
+}
+
+// c = m^e mod n
+void ModPower(Huge *mantissa, Huge *exponent, Huge * n, Huge *c)
+{
+	unsigned int i = exponent->size;
+	unsigned char mask;
+
+	assert(i);
+
+	Huge tmp1, tmp2, tmp3, tmp4;
+
+	SetHuge(&tmp1, 0);
+	SetHuge(&tmp2, 0);
+	SetHuge(&tmp3, 0);
+	SetHuge(&tmp4, 0);
+
+	CopyHuge(&tmp1, mantissa);
+	SetHuge(c, 1);
+
+	do
+	{
+		i--;
+		for (mask = 1; mask; mask <<= 1)
+		{
+			// compute both sides of the branch below
+			// should resist timing attack
+
+			CopyHuge(&tmp3, c);
+			CopyHuge(&tmp4, c);
+
+			Multiply(&tmp3, &tmp1);
+			Divide(&tmp3, n, NULL);
+
+			if (exponent->rep[i] & mask)
+			{
+				CopyHuge(c, &tmp3);
+			}
+			else
+			{
+				CopyHuge(c, &tmp4);
+			}
+
+			// square tmp1
+			CopyHuge(&tmp2, &tmp1);
+			Multiply(&tmp1, &tmp2);
+			Divide(&tmp1, n, NULL);
+		}
+	} while (i);
+
+	FreeHuge(&tmp1);
+	FreeHuge(&tmp2);
+	FreeHuge(&tmp3);
+	FreeHuge(&tmp4);
+}
+
+void LoadHuge(Huge *h, const unsigned char *bytes, int length)
+{
+	// skip over leading zeroes
+	while (!(*bytes))
+	{
+		bytes++;
+		length--;
+	}
+
+	h->size = length;
+	h->rep = (unsigned char*)malloc(length);
+	memcpy(h->rep, bytes, length);
+}
+
+void UnloadHuge(const Huge *h, unsigned char *bytes, int length)
+{
+	memcpy(bytes + (length - h->size), h->rep, length);
 }

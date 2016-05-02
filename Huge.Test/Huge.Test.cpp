@@ -62,10 +62,7 @@ int main(int argc, char **argv)
 			break;
 		case '^':
 			assert(stack_size >= 2);
-			Huge result;
-			Power(v0, v1, &result);
-			FreeHuge(v0);
-			*v0 = result;
+			Power(v0, v1);
 			stack_size--;
 			break;
 		default:
